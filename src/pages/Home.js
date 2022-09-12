@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput, FlatList} from 'react-native';
 import {SkillCard} from '../components/SkillCard';
 import {Button} from '../components/Button';
@@ -6,14 +6,28 @@ import {Button} from '../components/Button';
 export function Home() {
   const [newSkills, setNewSkills] = useState('');
   const [mySkills, setMySkills] = useState([]);
+  const [gretting, setGretting] = useState('');
 
   function handleAddNewSkills() {
     setMySkills(oldState => [...oldState, newSkills]);
   }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour < 12) {
+      setGretting('Good mornig');
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setGretting('Good afternoon');
+    } else {
+      setGretting('Good night');
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hello, Elias!</Text>
+      <Text style={styles.gretting}>{gretting}</Text>
 
       <TextInput
         style={styles.input}
@@ -59,5 +73,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderRadius: 5,
     backgroundColor: '#333',
+  },
+
+  gretting: {
+    color: '#FFF',
   },
 });
